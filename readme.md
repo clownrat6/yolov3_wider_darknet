@@ -38,9 +38,9 @@ python video.py --classes config/wider.names --pb temp_tiny/temp.pb --anchors co
 
 使用示例
 ``` python
-python image.py --classes config/wider.names --ckpt temp_tiny/temp --anchors config/wider_face_anchors_tiny.txt --input_img beautiful.jpg --output_img abc.jpg --tiny True
+python image.py --classes config/wider.names --ckpt model/tiny/yolov3_wider_tiny --anchors config/wider_face_anchors_tiny.txt --input_img beautiful.jpg --output_img abc.jpg --tiny True
 or
-python image.py --classes config/wider.names --pb temp/temp.pb --anchors config/wider_face_anchors.txt --input_img beautiful.jpg --output_img abc.jpg
+python image.py --classes config/wider.names --pb model/origin/yolov3_wider.pb --anchors config/wider_face_anchors.txt --input_img beautiful.jpg --output_img abc.jpg
 ```
 1. --classes 输入有多少个类，只用对脸进行分类，所以wider.names中只有一行.
 2. --ckpt/--pb 二选一选择使用ckpt方式，以及ckpt保存的路径，或者选择使用pb方式，以及pb文件保存的路径.
