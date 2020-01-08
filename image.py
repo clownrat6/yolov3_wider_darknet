@@ -29,24 +29,7 @@ def main(args=None):
 
         with tf.Session(graph=frozenGraph, config=config) as sess:
             img = plt.imread(args.input_img)
-            # w,h = img.shape[0:2]
-            # length_norm = max(w,h)
-            # offset = [int(length_norm/2-w/2),int(length_norm/2-h/2)]
             img_resized = pad_image(img, (416,416))
-            # img_recover = cv2.resize(img_resized, (length_norm,length_norm))
-            # img_resized = cv2.circle(img_resized, (150,320), 5, (0,0,0), 5)
-            # img_recover = cv2.circle(img_recover, (int(150*length_norm/416),int(320*length_norm/416)), 5, (0,0,0), 5)
-            # print(offset)
-            # point = (int(150*length_norm/416-offset[1]),int(320*length_norm/416-offset[0]))
-            # print(point)
-            # img = cv2.circle(img, point, 5, (255,255,255), 5)
-            # plt.subplot(131)
-            # plt.imshow(img_resized)
-            # plt.subplot(132)
-            # plt.imshow(img_recover)
-            # plt.subplot(133)
-            # plt.imshow(img)
-            # plt.show()
             img_resized = img_resized.astype(np.float32)
             detected_boxes = sess.run(
                 boxes, feed_dict={inputs: [img_resized]})
