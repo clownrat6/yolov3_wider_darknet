@@ -1,6 +1,10 @@
+# folder
 __pycache__
 */__pycache__
 **/__pycache__
 model
 weights
 data
+
+# file
+try.py
