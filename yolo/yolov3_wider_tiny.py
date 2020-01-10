@@ -52,7 +52,6 @@ def yolov3_tiny(input, num_classes, anchors):
 
     with tf.name_scope('yolov3_tiny'):
         route_1,route_2,input = backbone(input)
-        print(route_1,route_2,input)
         predict_1 = detection_layer(input, num_classes, img_size, anchors[3:6])
 
         route_2 = DBL(route_2, 128, 1)
