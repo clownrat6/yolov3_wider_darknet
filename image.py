@@ -61,7 +61,7 @@ def main(args=None):
             saver.restore(sess, args.ckpt)
             print('Model restored in {:.2f}s'.format(time.time()-t0))
             
-            img = cv2.imread(args.input_img)
+            img = plt.imread(args.input_img)
             img_resized = pad_image(img, (416,416))
             img_resized = img_resized.astype(np.float32)
             detected_boxes = sess.run(
