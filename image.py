@@ -70,7 +70,6 @@ def main(args=None):
             filtered_boxes = non_max_suppression(detected_boxes,
                                                     confidence_threshold=0.4,
                                                     iou_threshold=0.5)
-
             img = draw_boxes(filtered_boxes, img, classes, (416,416))
             img = judgebox(filtered_boxes, img, (416,416))
 

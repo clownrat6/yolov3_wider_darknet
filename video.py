@@ -37,6 +37,7 @@ def main(args=None):
                 flag,img = cap.read()
                 if not flag:
                     break
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 img_resized = pad_image(img, (416,416))
                 img_resized = img_resized.astype(np.float32)
                 detected_boxes = sess.run(
@@ -50,6 +51,7 @@ def main(args=None):
                 end = time.time()
                 fps = int(1/(end-start))
                 img = cv2.putText(img, 'FPS:{}'.format(fps), (100,30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (217,255,128), 2)
+                img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 cv2.imshow('冲',img)
                 cv2.waitKey(1)
 
@@ -80,6 +82,7 @@ def main(args=None):
                 flag,img = cap.read()
                 if not flag:
                     break
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 img_resized = pad_image(img, (416,416))
                 img_resized = img_resized.astype(np.float32)
                 detected_boxes = sess.run(
@@ -93,6 +96,7 @@ def main(args=None):
                 end = time.time()
                 fps = int(1/(end-start))
                 img = cv2.putText(img, 'FPS:{}'.format(fps), (100,50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,128), 1)
+                img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
                 cv2.imshow('冲',img)
                 cv2.waitKey(1)
 

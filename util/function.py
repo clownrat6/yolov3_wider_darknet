@@ -127,6 +127,7 @@ def draw_boxes(boxes, img, class_names, detection_size):
         one_class_boxes = boxes[i]
         for box,score in one_class_boxes:
             color = [int(score*255/(x+1)) for x in range(3)]
+            color = color[:-1]
             box = convert_to_original_size(box, detection_size, img.shape[0:2])
             img = cv2.rectangle(img,(box[0],box[1]),(box[2],box[3]),color,2)
             img = cv2.putText(img, '%s:%.3f'%(class_names[i],score), tuple(box[0:2]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255,255,255), 1)
