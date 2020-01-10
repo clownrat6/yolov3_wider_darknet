@@ -7,36 +7,40 @@ DECAY_BATCH_NORM = 0.9
 EPSILON = 1E-05
 LEAKY_RELU = 0.1
 
-def MDBL(input, filters, kernel_size, strides=2):
-    padding = 'same'
-    input = layers.max_pooling2d(input, 2, strides = strides, padding=padding)
-    input = layers.conv2d(input, filters, kernel_size, padding=padding ,use_bias=None)
-    input = layers.batch_normalization(input,momentum=DECAY_BATCH_NORM,epsilon=EPSILON)
-    input = tf.nn.leaky_relu(input,alpha=LEAKY_RELU)
-    return input
-
-def MDBLs(len, input, filter, kernel_size, strides=2):
-    for i in range(len):
-        input = MDBL(input, filter*2**i, kernel_size, strides=strides)
+def MDBL(input, filters, kernel_size=3, padding="VALID", stride=2):
+    input = DBL(input, filters, kernel_size)
+    input = layers.max_pooling2d(input, 2, strides = stride, padding=padding)
     return input
 
 def backbone(input):
-    out = DBL(input, 16, 3)
+    input = DBL(input, 16, 3)
+    input = layers.max_pooling2d(input, 2, strides=2, padding="VALID")
 
-    out = MDBLs(4, out, 32, 3)
+    input = DBL(input, 32, 3)
+    input = layers.max_pooling2d(input, 2, strides=2, padding="VALID")
 
-    route_1 = out
+    input = DBL(input, 64, 3)
+    input = layers.max_pooling2d(input, 2, strides=2, padding="VALID")
 
-    out = MDBLs(1, out, 512, 3)
-    out = MDBLs(1, out, 1024, 3, 1)
+    input = DBL(input, 128, 3)
+    input = layers.max_pooling2d(input, 2, strides=2, padding="VALID")
 
-    out = DBL(out, 256, 1)
+    input = DBL(input, 256, 3)
+    route_1 = input
+    input = layers.max_pooling2d(input, 2, strides=2, padding="VALID")
 
-    route_2 = out
+    input = DBL(input, 512, 3)
+    input = layers.max_pooling2d(input, 2, strides=1, padding="SAME")
+
+    input = DBL(input, 1024, 3)
+    input = DBL(input, 256, 1)
+    route_2 = input
+
+    input = DBL(input, 512, 3)
     
-    return route_1,route_2
+    return route_1,route_2,input
 
-def yolov3_wider_tiny(input, num_classes, anchors):
+def yolov3_tiny(input, num_classes, anchors):
     """
     YOLO V3 tiny version trained on WIDER FACE dataset.
     """
@@ -45,15 +49,15 @@ def yolov3_wider_tiny(input, num_classes, anchors):
     input = tf.cast(input,dtype=tf.float32)
     # normalization
     input = input / 255.
-    with tf.variable_scope('backbone_tiny'):
-        route_1,route_2 = backbone(input)
-    with tf.variable_scope('yolov3_tiny'):
-        out_2 = DBL(route_2, 512, 3)
-        predict_1 = detection_layer(out_2, num_classes, img_size, anchors[3:6])
+
+    with tf.name_scope('yolov3_tiny'):
+        route_1,route_2,input = backbone(input)
+        print(route_1,route_2,input)
+        predict_1 = detection_layer(input, num_classes, img_size, anchors[3:6])
 
         route_2 = DBL(route_2, 128, 1)
-        route_2_shape = route_2.get_shape().as_list()[1:3]
-        route_1 = upsampling(route_1, route_2_shape)
+        route_1_shape = route_1.get_shape().as_list()[1:3]
+        route_2 = upsampling(route_2, route_1_shape)
         route_1 = tf.concat([route_2, route_1],axis=-1)
         out_1 = DBL(route_1, 256, 3)
         predict_2 = detection_layer(out_1, num_classes, img_size, anchors[0:3])
