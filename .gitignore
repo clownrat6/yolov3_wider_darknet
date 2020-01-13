@@ -5,6 +5,7 @@ __pycache__
 dataset
 model
 weights
+release
 
 # file
 try.py
