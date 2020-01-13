@@ -118,7 +118,6 @@ if __name__ == "__main__":
         inputs = tf.placeholder(tf.float32, [None, 416, 416, 3])
         with tf.variable_scope('detector'):
             detections = model(inputs, len(classes), anchors)
-            print(tf.global_variables(scope='detector'))
             load_ops = load_weights(tf.global_variables(
                 scope='detector'), args.input)
 

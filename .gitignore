@@ -2,9 +2,9 @@
 __pycache__
 */__pycache__
 **/__pycache__
+dataset
 model
 weights
-data
 
 # file
 try.py

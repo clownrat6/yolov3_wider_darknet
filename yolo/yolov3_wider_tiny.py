@@ -40,7 +40,7 @@ def backbone(input):
     
     return route_1,route_2,input
 
-def yolov3_tiny(input, num_classes, anchors):
+def yolov3_wider_tiny(input, num_classes, anchors):
     """
     YOLO V3 tiny version trained on WIDER FACE dataset.
     """

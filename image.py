@@ -75,6 +75,7 @@ def main(args=None):
 
     plt.imsave(args.output_img,img)
     plt.imshow(img)
+    plt.axis('off')
     plt.show()
 
 if __name__ == "__main__":
@@ -87,7 +88,7 @@ if __name__ == "__main__":
                                     --output_img path for output image
                                     --anchors path for your prior anchors.''')
     parser.add_argument('--tiny',default=False,help='tiny model mode.')
-    parser.add_argument('--classes',default='wider.names',help='Your model preict classes')
+    parser.add_argument('--classes',default='config/wider.names',help='Your model preict classes')
     parser.add_argument('--ckpt',default='',help='Turn on the ckpt save mode.')
     parser.add_argument('--pb'  ,default='',help='Turn on the pb save mode.')
     parser.add_argument('--input_img',default='a.jpg',help='inputimage_path')
